@@ -6,7 +6,7 @@ from collections import OrderedDict
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from Crawler.utils import Extractor
+from Crawler.utils import Extractor, BadPaperException
 
 
 def crawl(count=5000):
@@ -30,12 +30,19 @@ def crawl(count=5000):
         page_content = Extractor.get_page_content(url, driver)
 
         # extract page info
-        doc_id = url.split("/")[-1]
-        title = Extractor.extract_title(page_content)
-        year = Extractor.extract_year(page_content)
-        authors = Extractor.extract_authors(page_content)
-        abstract = Extractor.extract_abstract(page_content)
-        references = Extractor.extract_references(page_content)
+        try:
+            doc_id = url.split("/")[-1]
+            title = Extractor.extract_title(page_content)
+            year = Extractor.extract_year(page_content)
+            authors = Extractor.extract_authors(page_content)
+            abstract = Extractor.extract_abstract(page_content)
+            references = Extractor.extract_references(page_content)
+        except BadPaperException as e:
+            reference = str(e)
+            if reference != "" and reference not in url_set:
+                url_set.add(reference)
+                urls.append(reference)
+            continue
 
         # update URLs
         for reference in references:
@@ -57,7 +64,7 @@ def crawl(count=5000):
             f.write("\n")
 
         # sleep before next request
-        time.sleep(random.Random().uniform(1, 5))
+        time.sleep(random.Random().uniform(0.5, 4))
 
     driver.quit()
 
