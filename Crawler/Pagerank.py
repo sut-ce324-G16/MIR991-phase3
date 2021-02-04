@@ -22,7 +22,9 @@ for l in Lines:
 weights = np.array([1 for _ in range(len(list_r))])
 list_r = np.array(list_r)
 G = sparse.csr_matrix((weights, (list_r[:,0], list_r[:,1])), shape=(num_id, num_id))
-pr=pagerank(G, p=0.85)
+print("Enter alpha for page rank:")
+alpha= float(input())
+pr =pagerank(G, p=alpha)
 for i,id in enumerate(dict_id.keys()):
     dict_id[id]= pr[i]
 

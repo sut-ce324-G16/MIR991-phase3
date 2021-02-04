@@ -22,7 +22,7 @@ def crawl(count=5000):
     chrome_options.add_argument(
         '--user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36"')
 
-    driver = webdriver.Chrome('Driver/chromedriver.exe', options=chrome_options)
+    driver = webdriver.Chrome('/Users/sana/Documents/GitHub/MIR991-phase3/Crawler/Driver/chromedriver', options=chrome_options)
 
     for i in range(count):
         url = urls[i]
